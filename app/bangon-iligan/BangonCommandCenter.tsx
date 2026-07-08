@@ -9,7 +9,7 @@ import {
     ShieldAlert, MapPin, Navigation,
 } from 'lucide-react';
 import type { DisasterFacility } from '@/validations/disasterSchema';
-import type { BangonConfig, BoardMessageRow, IncidentReportRow } from '@/validations/bangonSchema';
+import type { BangonConfig, BoardMessageRow, IncidentReportRow, FeedRow } from '@/validations/bangonSchema';
 import { CATEGORY_META, telHref } from '@/app/disaster/facilityMeta';
 import BangonLivePanel from './BangonLivePanel';
 import HazardReportModal from './HazardReportModal';
@@ -26,11 +26,13 @@ const DisasterMapLeaflet = dynamic(() => import('@/app/disaster/map/DisasterMapL
 
 export default function BangonCommandCenter({
     facilities,
+    feed,
     messages,
     reports,
     config,
 }: {
     facilities: DisasterFacility[];
+    feed: FeedRow[];
     messages: BoardMessageRow[];
     reports: IncidentReportRow[];
     config: BangonConfig;
@@ -154,7 +156,7 @@ export default function BangonCommandCenter({
                     >
                         <X className="h-4 w-4" />
                     </button>
-                    <BangonLivePanel reports={reports} messages={messages} boardEnabled={config.boardEnabled} />
+                    <BangonLivePanel feed={feed} reports={reports} messages={messages} boardEnabled={config.boardEnabled} />
                     <button
                         onClick={() => setPanelOpen(false)}
                         className="mt-2 hidden shrink-0 items-center justify-center gap-1.5 rounded-lg bg-white/90 py-1.5 text-xs font-bold text-slate-500 shadow-sm backdrop-blur transition-colors hover:text-slate-800 sm:inline-flex"

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { disasterFacilities } from '@/data/disaster';
 import { bangonConfig } from '@/data/bangon';
-import { getApprovedBoardMessages, getVerifiedIncidents } from '@/data/bangon/queries';
+import { getApprovedBoardMessages, getVerifiedIncidents, getFeedItems } from '@/data/bangon/queries';
 import { safeJsonLd } from '@/lib/utils';
 import BangonCommandCenter from './BangonCommandCenter';
 
@@ -20,9 +20,10 @@ export const metadata: Metadata = {
 
 export default async function BangonIliganPage() {
     const config = bangonConfig;
-    const [messages, reports] = await Promise.all([
+    const [messages, reports, feed] = await Promise.all([
         config.boardEnabled ? getApprovedBoardMessages() : Promise.resolve([]),
         getVerifiedIncidents(),
+        getFeedItems(),
     ]);
 
     // The 44 barangay admin pins sit at the city edges and blow out the map's
@@ -43,6 +44,7 @@ export default async function BangonIliganPage() {
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
             <BangonCommandCenter
                 facilities={mapFacilities}
+                feed={feed}
                 messages={messages}
                 reports={reports}
                 config={config}
